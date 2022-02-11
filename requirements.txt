@@ -1,3 +1,4 @@
 warcio
 python-slugify
 beautifulsoup4
+lxml

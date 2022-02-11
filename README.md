@@ -1,4 +1,17 @@
 
+# Usage
+
+```
+sudo apt update; apt install python3 python3-pip awscli
+aws configure
+pip install -r requirements.txt
+curl -L -O https://joieride-search.s3.amazonaws.com/crawled_urls/2022/02/10/c2c0610a-cc4f-488b-86e3-3b4d16dd465c.csv
+python3 src/urls-to-s3-requests.py *.csv ./warcs ./dl > /dev/null
+./run-dl.sh > run-dl.log &
+python3 src/warc-to-es-bulk.py ./warcs ./jsonl 1000 > warc-to-es-bulk.log &
+watch "./status.sh"
+```
+
 # Datasets
 
 ## HackerNews

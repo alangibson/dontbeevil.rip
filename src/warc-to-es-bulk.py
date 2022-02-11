@@ -1,4 +1,5 @@
 import sys, re, json, os
+from xml.etree.ElementTree import dump
 from warcio.archiveiterator import ArchiveIterator
 from bs4 import BeautifulSoup
 import lxml
@@ -40,60 +41,76 @@ def denoise_html(html):
 def convert_warc_to_document(filename):
     with open(filename, 'rb') as stream:
         for record in ArchiveIterator(stream):
-            if record.rec_type == 'response':
+            # Only consider responses
+            if record.rec_type != 'response':
+                continue
 
-                # Extract all interesting properties
-                url = record.rec_headers.get_header('WARC-Target-URI')
-                media_type = record.rec_headers.get_header('WARC-Identified-Payload-Type')
-                retrieved_at = record.rec_headers.get_header('WARC-Date')
-                updated_at = record.http_headers.get_header('Last-Modified')
-                language = record.http_headers.get_header('Content-Language')
-                raw_body = record.content_stream().read()
-                # TODO extract these fields
-                # HTML elements
-                #   title = html.head.title
+            # Extract all interesting properties
+            url = record.rec_headers.get_header('WARC-Target-URI')
+            media_type = record.rec_headers.get_header('WARC-Identified-Payload-Type')
+            retrieved_at = record.rec_headers.get_header('WARC-Date')
+            updated_at = record.http_headers.get_header('Last-Modified')
+            language = record.http_headers.get_header('Content-Language')
+            raw_body = record.content_stream().read()
+            # TODO extract these fields
+            # HTML elements
+            #   title = html.head.title
 
-                print(retrieved_at, media_type, url)
+            print(retrieved_at, media_type, url)
 
-                # Preprocess HTML
-                # TODO raw_body for indexing based on media_type
-                text = denoise_html(raw_body)
-                
-                # Yield a change object
-                yield [
-                    { 'index': { '_id': url } },
-                    { 
-                        'url': url,
-                        'language': language,
-                        'text': text
-                    }
-                ]
+            # Preprocess HTML
+            # TODO raw_body for indexing based on media_type
+            text = denoise_html(raw_body)
+            
+            # Yield a change object
+            yield [
+                { 'index': { '_id': url } },
+                { 
+                    'url': url,
+                    'language': language,
+                    'text': text
+                }
+            ]
+
+
+def dump_chunk(chunk, file_num):
+    filename = '%s/%s.jsonl' % (jsonldir, file_num)
+    print('Dumping', filename)
+    with open(filename, 'w') as f:
+        for c in chunk:
+            for l in c:
+                f.write(json.dumps(l) + '\n')
+    return filename
+
+
+def finish_chunk(chunk, file_num):
+    # Write changes in chunk out to jsonl file
+    dump_chunk(chunk, file_num)
 
 
 if __name__ == '__main__':
     warcdir = sys.argv[1]
     jsonldir = sys.argv[2]
     chunk_size = int(sys.argv[3])
+    delete_warcs = bool(sys.argv[4])
 
+    # Make sure output directory exists
     os.mkdir(jsonldir)
 
-    def dump_chunk(chunk, files):
-        with open('%s/%s.jsonl' % (jsonldir, files), 'w') as f:
-            for c in chunk:
-                for l in c:
-                    f.write(json.dumps(l) + '\n')
-
-    current_file = 1
+    current_file_num = 1
     chunk = []
     for warcfile in ['%s/%s' % (warcdir, w,) for w in os.listdir(warcdir)]:
         try:
             for change in convert_warc_to_document(warcfile):
                 if len(chunk) == chunk_size:
-                    dump_chunk(chunk, current_file)
+                    finish_chunk(chunk, current_file_num)
                     chunk = []
-                    current_file = current_file + 1
+                    current_file_num = current_file_num + 1
                 else:
                     chunk.append(change)
+            if delete_warcs:
+                os.remove(warcfile)
         except Exception as e:
             print('Error', e, warcfile)
-    dump_chunk(chunk, current_file)
+    # Write out whatever is left over
+    finish_chunk(chunk, current_file_num)

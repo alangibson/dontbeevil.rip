@@ -1,3 +1,7 @@
+#
+# urls-to-s3-requests.py *.csv ./warcs ./dl
+#
+
 import csv, os, stat, sys
 from slugify import slugify
 

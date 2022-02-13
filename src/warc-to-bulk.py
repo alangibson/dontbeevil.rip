@@ -74,7 +74,7 @@ def convert_warc_to_document(filename):
 
 
 def dump_chunk(chunk, file_num):
-    filename = '%s/%s.jsonl' % (jsonldir, file_num)
+    filename = '%s/%s.ndjson' % (ndjsondir, file_num)
     print('Dumping', filename)
     with open(filename, 'w') as f:
         for c in chunk:
@@ -84,18 +84,18 @@ def dump_chunk(chunk, file_num):
 
 
 def finish_chunk(chunk, file_num):
-    # Write changes in chunk out to jsonl file
+    # Write changes in chunk out to ndjson file
     dump_chunk(chunk, file_num)
 
 
 if __name__ == '__main__':
     warcdir = sys.argv[1]
-    jsonldir = sys.argv[2]
+    ndjsondir = sys.argv[2]
     chunk_size = int(sys.argv[3])
     delete_warcs = bool(sys.argv[4])
 
     # Make sure output directory exists
-    os.mkdir(jsonldir)
+    os.mkdir(ndjsondir)
 
     current_file_num = 1
     chunk = []

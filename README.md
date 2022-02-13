@@ -1,4 +1,12 @@
 
+# TODO
+
+- Enable ES Xpack security
+  - Change ES self-signed cert to ACM cert
+  - Update API GW to make authenticated calls
+- Point dontbeevil.rip to https://xo46sg6aeg.execute-api.us-east-1.amazonaws.com/prod
+  - Register dontbeevil.rip
+
 # Usage
 
 ```
@@ -8,8 +16,11 @@ pip install -r requirements.txt
 curl -L -O https://joieride-search.s3.amazonaws.com/crawled_urls/2022/02/10/c2c0610a-cc4f-488b-86e3-3b4d16dd465c.csv
 python3 src/urls-to-s3-requests.py *.csv ./warcs ./dl > /dev/null
 ./run-dl.sh > run-dl.log &
-python3 src/warc-to-es-bulk.py ./warcs ./jsonl 1000 > warc-to-es-bulk.log &
-watch "./status.sh"
+python3 src/warc-to-bulk.py ./warcs ./ndjson 1000 0 > warc-to-bulk.log &
+# watch "./status.sh"
+./src/upload-to-elasticsearch.sh \
+  https://ec2-3-238-77-187.compute-1.amazonaws.com:9200/main \
+  "$ES_PASSWORD"
 ```
 
 # Datasets

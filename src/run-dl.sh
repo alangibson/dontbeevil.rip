@@ -1,6 +1,10 @@
-#!/bin/bash -e
+#!/bin/bash
 
-for filename in ./dl/*.sh; do
+set -e
+
+SOURCE_DIR="./dl"
+
+for filename in $SOURCE_DIR/*.sh; do
     echo "Running $filename";
     source "$filename";
     rm -f "$filename";

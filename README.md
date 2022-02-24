@@ -1,6 +1,6 @@
 # DontBeEvil.rip : Search, for Programmers
 
-DontBeEvil.rip is a year long experiment to see if a small team can build a developer-focused search engine that enough people will pay $10 per month for it that it becomes self sustaining.
+DontBeEvil.rip is a year long experiment to see if a small team can build a developer-focused search engine that is self-sustaining on $10 monthly subscriptions.
 
 If the service isn't self-sustaining by March 1st 2023, it will be shut down. If it is, then it will be scaled up in these wonderful ways:
 

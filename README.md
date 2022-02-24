@@ -56,7 +56,3 @@ Just take a look at the CLI script. It's pretty self explanatory.
 ```bash
 cat rip
 ```
-
-## Suggestions
-
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeRtGev6GruCISC5n_e-39VNzJJkKjULLY0UJSFnbntAum5Hw/viewform?embedded=true" width="640" height="724" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>

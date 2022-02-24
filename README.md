@@ -4,10 +4,10 @@ DontBeEvil.rip is a year long experiment to see if a small team can build a deve
 
 If the service isn't self-sustaining by March 1st 2023, it will be shut down. If it is, then it will be scaled up in these wonderful ways:
 
-- Allow affinity groups to manage their own lists of sites to index
+- Allow affinity groups to manage their own site lists
 - Expand scope of indexed resources to all STEM subjects
-- Scale up search cluster resources
 - Run our own crawler on the most active sites
+- Add a Way Back Machine style cache
 
 ## Caveats
 
@@ -21,7 +21,7 @@ HackerNews, StackOverflow, Arxiv abstracts, 2M Github repos, and Programmer Redd
 
 The limited, but awesome, features in this first release are:
 
-- Expressions! Experience the power of Elasticsearch's (Simple Query Strings)[https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html]
+- Expressions! Experience the power of Elasticsearch's [Simple Query Strings](https://www.  elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html)
 - REST API
 
 Next priorities are:
@@ -56,3 +56,7 @@ Just take a look at the CLI script. It's pretty self explanatory.
 ```bash
 cat rip
 ```
+
+## Suggestions
+
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeRtGev6GruCISC5n_e-39VNzJJkKjULLY0UJSFnbntAum5Hw/viewform?embedded=true" width="640" height="724" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>

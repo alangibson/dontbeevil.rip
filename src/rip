@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+curl -s -G \
+-H 'Content-Type: application/json' -H 'Accept: application/json' \
+--data-urlencode "q=$1" \
+"https://xo46sg6aeg.execute-api.us-east-1.amazonaws.com/dev/search" \
+| jq -r '[ .hits.hits[] | { title: .fields.title[0], url: .fields.url[0], highlight: .highlight.text[0] } ]'  \
+| jtbl

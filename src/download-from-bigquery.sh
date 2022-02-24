@@ -7,10 +7,14 @@
 
 set -e
 
-START="${1-0}"
-END="$2"
-BUCKET_NAME="${3-joieride-search}"
-TABLE_NAME="${4-combined_posts}"
+END="$1"
+START="${2:-0}"
+OUTDIR="${3:-./bq}"
+BUCKET_NAME="${4:-joieride-search}"
+TABLE_NAME="${5:-combined_posts/combined_posts}"
+
+mkdir -p "$OUTDIR"
+pushd "$OUTDIR"
 
 for i in $(seq $START $END); do 
     # Figure out filename
@@ -28,3 +32,5 @@ for i in $(seq $START $END); do
     # rm -f "$filename"
 
 done
+
+popd

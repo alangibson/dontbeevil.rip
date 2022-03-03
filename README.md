@@ -21,7 +21,7 @@ HackerNews, StackOverflow, Arxiv abstracts, 2M Github repos, and Programmer Redd
 
 The limited, but awesome, features in this first release are:
 
-- Expressions! Experience the power of Elasticsearch's [Simple Query Strings](https://www.  elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html)
+- Expressions! Experience the power of Elasticsearch's [Simple Query Strings](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html)
 - REST API
 
 Next priorities are:
